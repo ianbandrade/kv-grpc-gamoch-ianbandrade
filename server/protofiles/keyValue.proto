@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package key_value;
+
+option go_package = "protofiles;pb";
+
+service KeyValueService {
+  rpc Get (Key) returns (Value) {}
+  rpc Put (KeyValue) returns (Empty) {}
+  rpc GetAllKeys (Empty) returns (StoredKeys) {}
+}
+
+message Key {
+  string Key = 1;
+}
+
+message Value {
+  string Value = 1;
+  bool Defined = 2;
+}
+
+message KeyValue {
+  string Key = 1;
+  string Value = 2;
+}
+
+message StoredKeys {
+  repeated string Keys = 1;
+}
+
+message Empty {
+}

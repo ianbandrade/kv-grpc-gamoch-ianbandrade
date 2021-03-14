@@ -1,0 +1,15 @@
+*
+
+!.gitignore
+!Dockerfile
+
+!protofiles/
+!protofiles/*.proto
+
+!pb/
+!pb/*.go
+
+!go.mod
+!go.sum
+
+!main.go
