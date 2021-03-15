@@ -3,10 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
-	"google.golang.org/grpc"
 	"key_value/client/pb"
 	"strings"
 	"time"
+
+	"github.com/spf13/cobra"
+	"google.golang.org/grpc"
 )
 
 const (
@@ -27,11 +29,39 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	_, _ = c.Put(ctx, &pb.KeyValue{Key: "foo", Value: "bar"})
+	var cmdPut = &cobra.Command{
+		Use:   "put [key] [value]",
+		Short: "Put a KeyValue object into a server",
+		Long:  `Put a data with a key and value into the server with one map struct object`,
+		Args:  cobra.ExactArgs(2),
+		Run: func(cmd *cobra.Command, args []string) {
+			c.Put(ctx, &pb.KeyValue{Key: args[0], Value: args[1]})
+		},
+	}
 
-	getResponse, _ := c.Get(ctx, &pb.Key{Key: "foo"})
-	fmt.Printf("Get Response: %s\n", getResponse.GetValue())
+	var cmdGet = &cobra.Command{
+		Use:   "get [key]",
+		Short: "Get an object value as from your key",
+		Long:  `Get a value of an object into the map struct of the server just passing a key`,
+		Args:  cobra.ExactArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+			getResponse, _ := c.Get(ctx, &pb.Key{Key: args[0]})
+			fmt.Printf("Get: Key='%s' Value='%s'\n", args[0], getResponse.GetValue())
+		},
+	}
 
-	getAllKeysResponse, _ := c.GetAllKeys(ctx, &pb.Empty{})
-	fmt.Printf("GetAllKeys Response: %s\n", strings.Join(getAllKeysResponse.GetKeys(), ", "))
+	var cmdGetAllKeys = &cobra.Command{
+		Use:   "getAllKeys",
+		Short: "Get all Keys",
+		Long:  `Get all Keys of the objects into the map struct of the server`,
+		Args:  cobra.NoArgs,
+		Run: func(cmd *cobra.Command, args []string) {
+			getAllKeysResponse, _ := c.GetAllKeys(ctx, &pb.Empty{})
+			fmt.Printf("GetAllKeys: %s\n", strings.Join(getAllKeysResponse.GetKeys(), ", "))
+		},
+	}
+
+	var rootCmd = &cobra.Command{Use: "app"}
+	rootCmd.AddCommand(cmdPut, cmdGet, cmdGetAllKeys)
+	rootCmd.Execute()
 }
