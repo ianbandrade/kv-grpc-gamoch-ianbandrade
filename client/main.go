@@ -61,7 +61,7 @@ func main() {
 		},
 	}
 
-	var rootCmd = &cobra.Command{Use: "app"}
+	var rootCmd = &cobra.Command{}
 	rootCmd.AddCommand(cmdPut, cmdGet, cmdGetAllKeys)
 	rootCmd.Execute()
 }
