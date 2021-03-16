@@ -30,7 +30,7 @@ Simple gRPC Key Value storage application
 
 ```bash
 # Clone Repository
-$ git clone https://github.com/PUC-DISCIPLINAS/kv-grpc-gamoch-ianbandrade.git
+$ git clone https://github.com/ianbandrade/kv-grpc-gamoch-ianbandrade.git
 ```
 
 ### Run Server
