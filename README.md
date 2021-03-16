@@ -66,7 +66,7 @@ Commands are built by a modern Go CLI interactions - [Cobra](https://github.com/
 
 You just need to type on Client folder one of this commands below, passing them following args:
 
-`go run main put [key] [value]` - Put a KeyValue object into a server
+`go run main.go put [key] [value]` - Put a KeyValue object into a server
 
 `go run main.go get [key]` - Get an object value as from your key
 
